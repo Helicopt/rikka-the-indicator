@@ -1,0 +1,83 @@
+#!/usr/bin/python
+# -*- coding: utf8 -*-
+#########################################################################
+# File Name: rikka.py
+# Author: Toka
+# mail: fengweitao@sensetime.com
+# Created Time: 2018年11月29日 星期四 16时52分33秒
+#########################################################################
+from math import *
+import random
+import os
+import sys
+import argparse
+
+def add_func(args):
+    pass
+
+def reset_func(args):
+    pass
+
+def del_func(args):
+    pass
+
+def conf_func(args):
+    pass
+
+def talk_func(args):
+    headword = args.sth[0] if len(args.sth) else ''
+    if headword[:2]=='C-' and unicode(headword[2:]).isnumeric():
+        commandid = int(headword[2:])
+        sth = args.sth[1:]
+    else:
+        commandid = None
+        sth = args.sth
+    talksth(sth, cid = commandid)
+
+def talksth(sth, cid = None):
+    if cid==1:
+        print 'Welcome New',
+        print '',
+    else:
+        randid = random.randint(1,100)
+        if len(sth)==0:
+            print 'I create a random number %d'%randid,
+
+def sync():
+    pass
+
+
+if __name__=='__main__':
+    # __author__ == '__toka__'
+
+    sync()
+
+    parser = argparse.ArgumentParser(description = 'rikka the indicator')
+
+    subparsers = parser.add_subparsers(help = 'commands')
+    addp = subparsers.add_parser('add', help = 'add something')
+    resetp = subparsers.add_parser('reset', help = 'reset something')
+    delp = subparsers.add_parser('del', help = 'remove something')
+    confp = subparsers.add_parser('set', help = 'config something')
+    talkp = subparsers.add_parser('talk', help = 'say something')
+
+    addp.add_argument('sth', help = 'sth to add', nargs = '+')
+    addp.set_defaults(func=add_func)
+    
+    resetp.add_argument('sth', help = 'sth to reset', nargs = '+')
+    resetp.set_defaults(func=reset_func)
+
+    delp.add_argument('sth', help = 'sth to remove', nargs = '+')
+    delp.set_defaults(func=del_func)
+    
+    confp.add_argument('sth', help = 'sth to config', nargs = '+')
+    confp.set_defaults(func=conf_func)
+    
+    talkp.add_argument('sth', help = 'sth to talk', nargs = '*')
+    talkp.set_defaults(func=talk_func)
+    
+    args = parser.parse_args()
+    print '[ rikka:',
+    args.func(args)
+    print ']',
+
